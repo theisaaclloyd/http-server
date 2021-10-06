@@ -1,0 +1,7 @@
+{
+	"html": "text/html",
+	"json": "text/json",
+	"pdf": "application/pdf",
+	"txt": "text/plain",
+	"ico": "image/x-icon"
+}

@@ -1,5 +1,6 @@
 const http = require('http');
 const Enmap = require("enmap");
+const filetypes = require('./filetypes.json');
 
 var client = {};
 
@@ -19,21 +20,29 @@ const requestListener = function (req, res) {
 	const url = req.url.toLowerCase().trim().slice(1).toString();
 	console.log(`request: |${url}|`);
 
+	var statusCode, contentType, content;
+
 	try {
 		const p = client.pages.get(url);
-		
+		//console.log(`requested file type: ${filetypes[url.split('.')[1]]}`)
+
 		if (p) {
-			res.setHeader("Content-Type", "text/html");
-			res.writeHead(200);
-			res.end(p);
+			statusCode = 200;
+			contentType = filetypes[url.split('.')[1]];
+			content = p;
 		}
 
 		else {
-			res.setHeader("Content-Type", "text/json");
-			res.writeHead(404);
-			res.end(JSON.stringify({ error: `Unable to find resource at '${url}'` }));
+			statusCode = 404;
+			contentType = 'text/json';
+			content = JSON.stringify({ error: `Unable to find resource at '${url}'` });
+
 			console.log(`Unable to find resource url ${url}`);
 		}
+
+		res.setHeader("Content-Type", contentType);
+		res.writeHead(statusCode);
+		res.end(content);
 
 	} catch (e) {
 		//res.setHeader("Content-Type", "text/json");
