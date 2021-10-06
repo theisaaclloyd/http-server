@@ -17,7 +17,7 @@ const init = async () => {
 };
 
 const requestListener = function (req, res) {
-	const url = req.url.toLowerCase().trim().slice(1).toString();
+	const url = req.url.toLowerCase().trim().slice(1).toString() || "index.html";
 	console.log(`request: |${url}|`);
 
 	var statusCode, contentType, content;
